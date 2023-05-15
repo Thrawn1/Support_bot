@@ -13,21 +13,62 @@ import sqlite3
 #Таблица request_support связана с таблицей status по полю status
 #Поле id_supervisor таблицы subdivision_support связано с полем id таблицы employees
 
+# def create_db():
+#     conn = sqlite3.connect('support_tmp.db')
+#     cursor = conn.cursor()
+#     cursor.execute("""CREATE TABLE IF NOT EXISTS employees(
+#         id INTEGER PRIMARY KEY AUTOINCREMENT,
+#         name TEXT,
+#         middle_name TEXT,
+#         family TEXT,
+#         age INTEGER,
+#         id_subdivision INTEGER REFERENCES subdivision(id_subdivision),
+#         mobile_phone INTEGER 
+#         )""")
+#     cursor.execute("""CREATE TABLE IF NOT EXISTS subdivision(
+#         id_subdivision INTEGER PRIMARY KEY AUTOINCREMENT,
+#         name_subdivision TEXT
+#         )""")
+#     cursor.execute("""CREATE TABLE IF NOT EXISTS status(
+#         id_status INTEGER PRIMARY KEY AUTOINCREMENT,
+#         name_status TEXT
+#         )""")
+#     cursor.execute("""CREATE TABLE IF NOT EXISTS subdivision_support(
+#         id_support INTEGER PRIMARY KEY AUTOINCREMENT,
+#         name_support TEXT,
+#         id_supervisor INTEGER REFERENCES employees(id)
+#         )""")
+#     cursor.execute("""CREATE TABLE IF NOT EXISTS request_support(
+#         id_request INTEGER PRIMARY KEY AUTOINCREMENT,
+#         id_employee INTEGER REFERENCES employees(id),
+#         id_subdivision_support INTEGER REFERENCES subdivision_support(id_support),
+#         description TEXT,
+#         date_request DATE,
+#         status INTEGER REFERENCES status(id_status),
+#         date_support DATE 
+#         )""")
+
+#     conn.commit()
+#     conn.close()
+
+
+
 def create_db():
     conn = sqlite3.connect('support.db')
     cursor = conn.cursor()
+    cursor.execute("""CREATE TABLE IF NOT EXISTS subdivision(
+        id_subdivision INTEGER PRIMARY KEY AUTOINCREMENT,
+        name_subdivision TEXT
+        )""")
     cursor.execute("""CREATE TABLE IF NOT EXISTS employees(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT,
         middle_name TEXT,
         family TEXT,
         age INTEGER,
-        id_subdivision INTEGER REFERENCES subdivision(id_subdivision),
-        mobile_phone INTEGER 
-        )""")
-    cursor.execute("""CREATE TABLE IF NOT EXISTS subdivision(
-        id_subdivision INTEGER PRIMARY KEY AUTOINCREMENT,
-        name_subdivision TEXT
+        id_subdivision INTEGER,
+        mobile_phone INTEGER,
+        FOREIGN KEY (id_subdivision) REFERENCES subdivision(id_subdivision)
         )""")
     cursor.execute("""CREATE TABLE IF NOT EXISTS status(
         id_status INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -36,20 +77,26 @@ def create_db():
     cursor.execute("""CREATE TABLE IF NOT EXISTS subdivision_support(
         id_support INTEGER PRIMARY KEY AUTOINCREMENT,
         name_support TEXT,
-        id_supervisor INTEGER REFERENCES employees(id)
+        id_supervisor INTEGER,
+        FOREIGN KEY (id_supervisor) REFERENCES employees(id)
         )""")
     cursor.execute("""CREATE TABLE IF NOT EXISTS request_support(
         id_request INTEGER PRIMARY KEY AUTOINCREMENT,
-        id_employee INTEGER REFERENCES employees(id),
-        id_subdivision_support INTEGER REFERENCES subdivision_support(id_support),
+        id_employee INTEGER ,
+        id_subdivision_support INTEGER ,
         description TEXT,
         date_request DATE,
-        status INTEGER REFERENCES status(id_status),
-        date_support DATE 
+        status INTEGER ,
+        date_support DATE,
+        FOREIGN KEY (id_employee) REFERENCES employees(id),
+        FOREIGN KEY (id_subdivision_support) REFERENCES subdivision_support(id_support),
+        FOREIGN KEY (status) REFERENCES status(id_status) 
         )""")
-
     conn.commit()
     conn.close()
+
+
+
 
 if __name__ == '__main__':
     create_db()
