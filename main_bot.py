@@ -12,8 +12,35 @@ logging.basicConfig(level=logging.INFO)
 @dp.message_handler(text(equals="Поиск решения проблемы"))
 async def process_start_command(message: types.Message):
     await message.answer("Когда нибудь Миша напишет диплом")
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    buttons = ["Не работоспобность обрудования", "Проблемы с программным обеспечением", "Проблемы с доступом в интернет", "Проблемы с лицензиями"]
+    keyboard.add(*buttons)  
+    await message.answer("Выберете категорию проблемы", reply_markup=keyboard)
+
+@dp.message_handler(text(equals="Не работоспобность обрудования"))
+async def process_start_command(message: types.Message):
+    await message.answer("Заглушка. Не работоспобность обрудования")
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    buttons = ["Принтер", "Компьютер", "Сканер", "МФУ"]
+    keyboard.add(*buttons)  
+    await message.answer("Выберете подкатегорию проблемы", reply_markup=keyboard)
+
+@dp.message_handler(text(equals="Проблемы с программным обеспечением"))
+async def process_start_command(message: types.Message):
+    await message.answer("Заглушка. Проблемы с программным обеспечением")
+
+@dp.message_handler(text(equals="Проблемы с доступом в интернет"))
+async def process_start_command(message: types.Message):
+    await message.answer("Заглушка. Проблемы с доступом в интернет")
+
+@dp.message_handler(text(equals="Проблемы с лицензиями"))
+async def process_start_command(message: types.Message):
+    await message.answer("Заглушка. Проблемы с лицензиями")
 
 
+@dp.message_handler(text(equals="Заявка в IT отдел"))
+async def process_start_command(message: types.Message):
+    await message.answer("Заглушка. Создание заявки")
 
 @dp.message_handler(commands=['start'])
 async def process_start_command(message: types.Message):
