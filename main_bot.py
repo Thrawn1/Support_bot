@@ -25,6 +25,59 @@ async def process_start_command(message: types.Message):
     keyboard.add(*buttons)  
     await message.answer("Выберете подкатегорию проблемы", reply_markup=keyboard)
 
+
+@dp.message_handler(text(equals="Принтер"))
+async def process_start_command(message: types.Message):
+    path = 'help_resourse/'
+    file_name = 'printer'
+    print(path + file_name)
+    with open((path + file_name), 'r',encoding='utf-8') as file:
+        text = file.read()
+    await message.answer(text)
+    await message.answer("Данная информация помогла вам?", reply_markup=types.ReplyKeyboardMarkup(resize_keyboard=True).add("Да", "Нет"))
+    @dp.message_handler(text(equals="Да"))
+    async def process_start_command(message: types.Message):
+        await message.answer("Спасибо за обращение в нашу службу поддержки")
+    @dp.message_handler(text(equals="Нет"))
+    async def process_start_command(message: types.Message):
+        await message.answer("Мои возможности ограничены, обратитесь в IT отдел")
+        keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        buttons = ["Заявка в IT отдел"]
+        keyboard.add(*buttons)
+        await message.answer("Выберете подкатегорию проблемы", reply_markup=keyboard)
+
+@dp.message_handler(text(equals="Сканер"))
+async def process_start_command(message: types.Message):
+    path = 'help_resourse/'
+    file_name = 'scaner'
+    print(path + file_name)
+    with open((path + file_name), 'r',encoding='utf-8') as file:
+        text = file.read()
+    await message.answer(text)
+    await message.answer("Данная информация помогла вам?", reply_markup=types.ReplyKeyboardMarkup(resize_keyboard=True).add("Да", "Нет"))
+
+@dp.message_handler(text(equals="Компьютер"))
+async def process_start_command(message: types.Message):
+    path = 'help_resourse/'
+    file_name = 'computer'
+    print(path + file_name)
+    with open((path + file_name), 'r',encoding='utf-8') as file:
+        text = file.read()
+    await message.answer(text)
+    await message.answer("Данная информация помогла вам?", reply_markup=types.ReplyKeyboardMarkup(resize_keyboard=True).add("Да", "Нет"))
+
+@dp.message_handler(text(equals="МФУ"))
+async def process_start_command(message: types.Message):
+    path = 'help_resourse/'
+    file_name = 'mfu'
+    print(path + file_name)
+    with open((path + file_name), 'r',encoding='utf-8') as file:
+        text = file.read()
+    await message.answer(text)
+    await message.answer("Данная информация помогла вам?", reply_markup=types.ReplyKeyboardMarkup(resize_keyboard=True).add("Да", "Нет"))
+
+
+
 @dp.message_handler(text(equals="Проблемы с программным обеспечением"))
 async def process_start_command(message: types.Message):
     await message.answer("Заглушка. Проблемы с программным обеспечением")
