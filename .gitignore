@@ -7,3 +7,4 @@
 *.pyc
 config.py
 *.db
+*.log
