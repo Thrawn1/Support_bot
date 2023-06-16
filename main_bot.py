@@ -14,17 +14,20 @@ dp = Dispatcher(bot=bot, storage=storage)
 logging.basicConfig(level=logging.INFO, filename='bot.log', filemode='w')
 
 
-class ClientStates(StatesGroup):
-    manual = State()
-    software = State()
-    web = State()
-    license = State()
-    mfu = State()
-    printer = State()
-    scaner = State()
-    computer = State()
-    choice_main = State()
-    choice_problem = State()
+# class ClientStates(StatesGroup):
+#     choice_main = State()
+#     choice_problem = State()
+#     choice_equipment = State()
+#     mfu = State()
+#     printer = State()
+#     scaner = State()
+#     computer = State()
+#     software = State()
+#     web = State()
+#     license = State()
+#     manual = State()
+    
+    
     
     
 def keyboard_main_menu() -> ReplyKeyboardMarkup:
@@ -55,12 +58,10 @@ def keyboard_equipment() -> ReplyKeyboardMarkup:
 async def process_start_command(message: types.Message):
     await message.reply("Здравствуйте!\nВас привествует бот технической поддержки",reply_markup=keyboard_main_menu())
     await message.answer("Выберете режим работы")
-    await ClientStates.choice_main.set()
 
 
 @dp.message_handler(text(equals="Нет"))
 async def slect_no(message: types.Message):
-    await ClientStates.manual.set()
     await create_manual_request(message)
     
 
@@ -91,21 +92,19 @@ async def create_manual_request(message: types.Message):
 
 
 @dp.message_handler(text(equals="Отмена"))
-async def process_cancel(message: types.Message, state: FSMContext):
+async def process_cancel(message: types.Message):
     path = 'help_resourse/'
     file_name = 'thanks'
     print(path + file_name)
     with open((path + file_name), 'r',encoding='utf-8') as file:
         text = file.read()
     await message.answer(text)
-    await state.finish()
 
 
-@dp.message_handler(text(equals="Поиск решения проблемы"), state = ClientStates.choice_main)
-async def process_select_problem(message: types.Message, state: FSMContext):
+@dp.message_handler(text(equals="Поиск решения проблемы"))
+async def process_select_problem(message: types.Message):
     #await message.answer("Когда нибудь Миша напишет диплом")
     await message.answer("Выберете категорию проблемы", reply_markup=keyboard_problem())
-    await ClientStates.next()
 
 
 @dp.message_handler(text(equals="Не работоспобность обрудования"))
@@ -124,6 +123,7 @@ async def software_problem(message: types.Message):
     await message.answer("Данная информация помогла вам?", reply_markup=keyboard_yes_no())
 
 
+
 @dp.message_handler(text(equals="Проблемы с доступом в интернет"))
 async def web_problem(message: types.Message):
     path = 'help_resourse/'
@@ -133,7 +133,6 @@ async def web_problem(message: types.Message):
         text = file.read()
     await message.answer(text)
     await message.answer("Данная информация помогла вам?", reply_markup=keyboard_yes_no())
-
 
 @dp.message_handler(text(equals="Проблемы с лицензиями"))
 async def license_problem(message: types.Message):
